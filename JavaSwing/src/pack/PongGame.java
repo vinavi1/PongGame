@@ -25,8 +25,8 @@ import javax.swing.WindowConstants;
 public class PongGame extends JComponent implements ActionListener,KeyListener{
 	int xd=700,yd=800;
 	double padvel=0.75;
-	double paddle1x=400,paddle1y=yd-30;
-	double paddle2x=30,paddle2y=225;
+	double paddle1x=400,paddle1y=yd-20;
+	double paddle2x=10,paddle2y=225;
 	double paddle3x=400,paddle3y=10;
 	double paddle1vx=0;
 	double paddle3vx=0;
@@ -98,35 +98,33 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 			velx=velx+(ballx-paddle1x-40)*deviation;
 			scored(0);
 			predLocation=predict(0);
-			System.out.println(predLocation);
 		}
 		if(ballx>=paddle1x-43.5&&ballx<=paddle1x+103.5&&bally<=paddle1y+10&&bally>=paddle1y-40){
 			velx=-velx+(ballx-paddle1x-40)*deviation;
 			scored(0);
 			predLocation=predict(0);
-			System.out.println(predLocation);
 		}
 		if(ballx>=paddle3x-40&&ballx<=paddle3x+100&&bally<=paddle3y+13.5&&bally>=paddle3y-43.5){
 			vely=-vely;
 			velx=velx+(ballx-paddle3x-40)*deviation;
 			scored(2);
 			predLocation=predict(2);
-			System.out.println(predLocation);
 		}
 		if(ballx>=paddle3x-43.5&&ballx<=paddle3x+103.5&&bally<=paddle3y+10&&bally>=paddle3y-40){
 			velx=-velx+(ballx-paddle3x-40)*deviation;
 			scored(2);
 			predLocation=predict(2);
-			System.out.println(predLocation);
 		}
 		if(bally>=paddle2y-40&&bally<=paddle2y+100&&ballx<=paddle2x+13.5&&ballx>=paddle2x-43.5){
 			velx=-velx;
 			vely=vely+(bally-paddle2y-40)*deviation;
 			scored(1);
+			predLocation=predict(1);
 		}
 		if(bally>=paddle2y-43.5&&bally<=paddle2y+103.5&&ballx<=paddle2x+10&&ballx>=paddle2x-40){
 			vely=-vely+(bally-paddle2y-40)*deviation;
 			scored(1);
+			predLocation=predict(1);
 		}
 		if(ballx <0 || ballx >xd-40){
 			velx = -velx;
@@ -134,7 +132,7 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 		if(bally <0 || bally >yd-40){
 			vely = -vely;
 		}
-		if(velx>5||vely>5){
+		if(velx>2.5||vely>2.5){
 			velx=1;
 			vely=1.5;
 		}
@@ -174,46 +172,55 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 		double temp = 0;
 		switch(x){
 		case 2:
-			temp=yd*Math.abs(velx/vely);
+			temp=(yd-80)*Math.abs(velx/vely);
 			break;
 		case 0:
-			temp=2*yd*Math.abs(velx/vely);
+			temp=2*(yd-80)*Math.abs(velx/vely);
+			break;
+		case 1:
+			if(vely<0){
+				temp=(yd-80)*Math.abs(velx/vely)+(bally-20)*Math.abs(velx/vely);
+			}
+			else{
+				temp=(bally-60)*Math.abs(velx/vely);
+				System.out.println(temp);
+			}
 			break;
 		}
 		if(velx<0){
-			double ch=xd+2;
+			double ch=xd-40+2;
 			int k;
 			if(temp<ballx){
 				return (ballx-temp);
 			}
 			else{
-				for(k=0;ch>xd;k++){
-					ch = temp-ballx-k*xd;
+				for(k=0;ch>xd-40;k++){
+					ch = temp-ballx-k*(xd-40);
 				}
 				if(k%2!=0){
-					return ch-60;
+					return ch-40;
 				}
 				else{
-					return xd-ch-60;
+					return xd-ch-40-40;
 				}
 			}
 		}
 		else{
-			double ch=xd+2;
+			double ch=xd+2-40;
 			int k;
-			if(temp<xd-ballx){
-				return (ballx+temp);
+			if(temp<xd-ballx-40){
+				System.out.println(ballx+temp);
+				return (ballx+temp);	//
 			}
 			else{
-				for(k=0;ch>xd;k++){
-					ch = ballx+temp-k*xd;
-					System.out.println(ch+"-"+k);
+				for(k=0;ch>xd-40;k++){
+					ch = ballx+temp-k*(xd-40);
 				}
 				if(k%2==0){
-					return xd-ch-60;
+					return xd-ch-40-40;
 				}
 				else{
-					return (ch-60);
+					return (ch-40);
 				}
 			}
 		}
