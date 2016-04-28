@@ -29,6 +29,17 @@ public class NewGame extends JPanel {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	private JTextField textField_4;
+	private JTextField textField_5;
+	private JTextField textField_6;
+	private JTextField textField_7;
+	private JTextField textField_8;
+	private JTextField textField_9;
+	private JTextField textField_10;
+	private JTextField textField_11;
+	private JTextField textField_12;
+	private JTextField textField_13;
+	private JTextField textField_14;
 	/**
 	 * Create the panel.
 	 */
@@ -54,14 +65,14 @@ public class NewGame extends JPanel {
 		comboBox.setBackground(Color.ORANGE);
 		comboBox.setSelectedIndex(0);
 		comboBox.setFont(new Font("Snap ITC", Font.PLAIN, 18));
-		comboBox.setBounds(306, 270, 216, 22);
+		comboBox.setBounds(306, 198, 216, 22);
 		add(comboBox);
 		
 		JLabel lblDifficulty = new JLabel("Difficulty");
 		lblDifficulty.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDifficulty.setForeground(Color.RED);
 		lblDifficulty.setFont(new Font("Snap ITC", Font.BOLD, 18));
-		lblDifficulty.setBounds(138, 261, 156, 40);
+		lblDifficulty.setBounds(138, 189, 156, 40);
 		add(lblDifficulty);
 		
 		JLabel lblPlayers = new JLabel("Players");
@@ -156,6 +167,118 @@ public class NewGame extends JPanel {
 		textField_3.setColumns(10);
 		textField_3.setBounds(306, 638, 216, 22);
 		add(textField_3);
+		
+		textField_4 = new JTextField();
+		textField_4.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_4.setColumns(10);
+		textField_4.setBackground(Color.ORANGE);
+		textField_4.setBounds(607, 438, 216, 22);
+		add(textField_4);
+		
+		textField_5 = new JTextField();
+		textField_5.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_5.setColumns(10);
+		textField_5.setBackground(Color.ORANGE);
+		textField_5.setBounds(607, 504, 216, 22);
+		add(textField_5);
+		
+		textField_6 = new JTextField();
+		textField_6.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_6.setColumns(10);
+		textField_6.setBackground(Color.ORANGE);
+		textField_6.setBounds(607, 569, 216, 22);
+		add(textField_6);
+		
+		textField_7 = new JTextField();
+		textField_7.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_7.setColumns(10);
+		textField_7.setBackground(Color.ORANGE);
+		textField_7.setBounds(607, 638, 216, 22);
+		add(textField_7);
+		
+		textField_8 = new JTextField();
+		textField_8.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_8.setColumns(10);
+		textField_8.setBackground(Color.ORANGE);
+		textField_8.setBounds(906, 438, 216, 22);
+		add(textField_8);
+		
+		textField_9 = new JTextField();
+		textField_9.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_9.setColumns(10);
+		textField_9.setBackground(Color.ORANGE);
+		textField_9.setBounds(906, 504, 216, 22);
+		add(textField_9);
+		
+		textField_10 = new JTextField();
+		textField_10.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_10.setColumns(10);
+		textField_10.setBackground(Color.ORANGE);
+		textField_10.setBounds(906, 569, 216, 22);
+		add(textField_10);
+		
+		textField_11 = new JTextField();
+		textField_11.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_11.setColumns(10);
+		textField_11.setBackground(Color.ORANGE);
+		textField_11.setBounds(906, 638, 216, 22);
+		add(textField_11);
+		
+		JLabel lblPort = new JLabel("Port");
+		lblPort.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPort.setForeground(Color.RED);
+		lblPort.setFont(new Font("Showcard Gothic", Font.BOLD, 18));
+		lblPort.setBounds(633, 373, 156, 40);
+		add(lblPort);
+		
+		JLabel lblIp = new JLabel("IP");
+		lblIp.setHorizontalAlignment(SwingConstants.CENTER);
+		lblIp.setForeground(Color.RED);
+		lblIp.setFont(new Font("Showcard Gothic", Font.BOLD, 18));
+		lblIp.setBounds(932, 373, 156, 40);
+		add(lblIp);
+		
+		textField_12 = new JTextField();
+		textField_12.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_12.setColumns(10);
+		textField_12.setBackground(Color.ORANGE);
+		textField_12.setBounds(607, 272, 216, 22);
+		add(textField_12);
+		
+		textField_13 = new JTextField();
+		textField_13.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_13.setColumns(10);
+		textField_13.setBackground(Color.ORANGE);
+		textField_13.setBounds(906, 272, 216, 22);
+		add(textField_13);
+		
+		textField_14 = new JTextField();
+		textField_14.setFont(new Font("Snap ITC", Font.ITALIC, 18));
+		textField_14.setColumns(10);
+		textField_14.setBackground(Color.ORANGE);
+		textField_14.setBounds(306, 274, 216, 22);
+		add(textField_14);
+		
+		JLabel lblName = new JLabel("Your Name");
+		lblName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblName.setForeground(Color.RED);
+		lblName.setFont(new Font("Snap ITC", Font.BOLD, 18));
+		lblName.setBounds(138, 263, 156, 40);
+		add(lblName);
+		
+		JLabel lblYourPort = new JLabel("Your Port");
+		lblYourPort.setHorizontalAlignment(SwingConstants.CENTER);
+		lblYourPort.setForeground(Color.RED);
+		lblYourPort.setFont(new Font("Showcard Gothic", Font.BOLD, 18));
+		lblYourPort.setBounds(633, 203, 156, 40);
+		add(lblYourPort);
+		
+		JLabel lblYourPort_1 = new JLabel("Your IP");
+		lblYourPort_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblYourPort_1.setForeground(Color.RED);
+		lblYourPort_1.setFont(new Font("Showcard Gothic", Font.BOLD, 18));
+		lblYourPort_1.setBounds(932, 203, 156, 40);
+		add(lblYourPort_1);
 		
 		comboBox_1.addItemListener(new ItemListener() {
 			@Override
