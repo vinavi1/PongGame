@@ -24,7 +24,7 @@ import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
 public class PongGame extends JComponent implements ActionListener,KeyListener{
-	int xd=700,yd=800;
+	int xd=700,yd=600;
 	double padvel=0.75;
 	double paddle1x=400,paddle1y=yd-20;
 	double paddle2x=10,paddle2y=225;
@@ -105,45 +105,45 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 			vely=-vely;
 			velx=velx+(ballx-paddle1x-40)*deviation;
 			scored(0);
-			predLocation=predict(1);
+			predLocation=predict(3,3);
 		}
 		if(ballx>=paddle1x-43.5&&ballx<=paddle1x+103.5&&bally<=paddle1y+10&&bally>=paddle1y-40){
 			velx=-velx+(ballx-paddle1x-40)*deviation;
 			scored(0);
-			predLocation=predict(1);
+			predLocation=predict(3,3);
 		}
 		if(ballx>=paddle3x-40&&ballx<=paddle3x+100&&bally<=paddle3y+13.5&&bally>=paddle3y-43.5){
 			vely=-vely;
 			velx=velx+(ballx-paddle3x-40)*deviation;
 			scored(2);
-			predLocation=predict(3);
+			predLocation=predict(1,3);
 		}
 		if(ballx>=paddle3x-43.5&&ballx<=paddle3x+103.5&&bally<=paddle3y+10&&bally>=paddle3y-40){
 			velx=-velx+(ballx-paddle3x-40)*deviation;
 			scored(2);
-			predLocation=predict(3);
+			predLocation=predict(1,3);
 		}
 		if(bally>=paddle2y-40&&bally<=paddle2y+100&&ballx<=paddle2x+13.5&&ballx>=paddle2x-43.5){
 			velx=-velx;
 			vely=vely+(bally-paddle2y-40)*deviation;
 			scored(1);
-			predLocation=predict(2);
+			predLocation=predict(4,3);
 		}
 		if(bally>=paddle2y-43.5&&bally<=paddle2y+103.5&&ballx<=paddle2x+10&&ballx>=paddle2x-40){
 			vely=-vely+(bally-paddle2y-40)*deviation;
 			scored(1);
-			predLocation=predict(2);
+			predLocation=predict(4,3);
 		}
 		if(bally>=paddle4y-40&&bally<=paddle4y+100&&ballx<=paddle4x+13.5&&ballx>=paddle4x-43.5){
 			velx=-velx;
 			vely=vely+(bally-paddle4y-40)*deviation;
 			scored(1);
-			predLocation=predict(4);
+			predLocation=predict(2,3);
 		}
 		if(bally>=paddle4y-43.5&&bally<=paddle4y+103.5&&ballx<=paddle4x+10&&ballx>=paddle4x-40){
 			vely=-vely+(bally-paddle4y-40)*deviation;
 			scored(1);
-			predLocation=predict(4);
+			predLocation=predict(2,3);
 		}
 		if(ballx <0 || ballx >xd-40){
 			velx = -velx;
@@ -156,14 +156,14 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 			vely=1.5;
 		}
 		if(predLocation!=0){
-			if(predLocation-40>paddle1x){
-				paddle1vx=padvel;
+			if(predLocation-40>paddle3x){
+				paddle3vx=padvel;
 			}
 			else{
-				paddle1vx=-padvel;
+				paddle3vx=-padvel;
 			}
 		}
-		follow(3);
+		follow(1);
 		ballx = ballx + velx;
 		bally = bally + vely;
 		paddle1x = paddle1x + paddle1vx;
@@ -177,9 +177,9 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 		switch(i){
 		case 1:
 			if(paddle1x+40>ballx)
-				paddle1vx=padvel;
-			else
 				paddle1vx=-padvel;
+			else
+				paddle1vx=padvel;
 			break;
 		case 2:
 			if(paddle2y+40<bally)
@@ -196,9 +196,9 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 		}
 	}
 	
-	public double predict(int x){
+	public double predict(int opponent,int comp){
 		double temp = 0;
-		switch(x){
+		switch(opponent){
 		case 3:
 			temp=(yd-80)*Math.abs(velx/vely);
 			break;
@@ -207,31 +207,47 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 			break;
 		case 2:
 			if(vely<0){
-				temp=(yd-80)*Math.abs(velx/vely)+(bally-20)*Math.abs(velx/vely);
+				switch(comp){
+				case 1:
+					temp=(yd-80)*Math.abs(velx/vely)+(bally-20)*Math.abs(velx/vely);
+					break;
+				case 3:
+					temp=(bally-20)*Math.abs(velx/vely);
+					break;
+				}	
 			}
 			else{
-				temp=(yd-bally-60)*Math.abs(velx/vely);
+				if(comp==1)
+					temp=(yd-bally-60)*Math.abs(velx/vely);
+				else
+					temp=(yd-bally-60)*Math.abs(velx/vely)+(yd-80)*Math.abs(velx/vely);
 			}
 			break;
 		case 4:
 			if(vely<0){
-				temp=(yd-80)*Math.abs(velx/vely)+(bally-20)*Math.abs(velx/vely);
+				if(comp==1)
+					temp=(yd-80)*Math.abs(velx/vely)+(bally-20)*Math.abs(velx/vely);
+				else
+					temp=(bally-20)*Math.abs(velx/vely);
 			}
 			else{
-				temp=(yd-bally-60)*Math.abs(velx/vely);
-				System.out.println(temp);
+				if(comp==1)
+					temp=(yd-bally-60)*Math.abs(velx/vely);
+				else
+					temp=(yd-bally-60)*Math.abs(velx/vely)+(yd-80)*Math.abs(velx/vely);
 			}
 			break;
 		}
 		if(velx<0){
 			double ch=xd-40+2;
 			int k;
-			if(temp<ballx){
-				return (ballx-temp);
+			double ballxtemp=ballx;
+			if(temp<ballxtemp){
+				return (ballxtemp-temp);
 			}
 			else{
 				for(k=0;ch>xd-40;k++){
-					ch = temp-ballx-k*(xd-40);
+					ch = temp-ballxtemp-k*(xd-20);
 				}
 				if(k%2!=0){
 					return ch-40;
@@ -245,12 +261,11 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 			double ch=xd+2-40;
 			int k;
 			if(temp<xd-ballx-40){
-				System.out.println(ballx+temp);
 				return (ballx+temp);	//
 			}
 			else{
 				for(k=0;ch>xd-40;k++){
-					ch = ballx+temp-k*(xd-40);
+					ch = ballx+temp-k*(xd-20);
 				}
 				if(k%2==0){
 					return xd-ch-40-40;

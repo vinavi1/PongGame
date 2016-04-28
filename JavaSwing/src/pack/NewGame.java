@@ -35,7 +35,7 @@ public class NewGame extends JPanel {
 	  protected void paintComponent(Graphics g) {
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File("C:/Users/Akram Khan/Desktop/hqdefault.jpg"));
+			image = ImageIO.read(new File("C:/Users/Vineeth Patibandla/Desktop/mess.jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
