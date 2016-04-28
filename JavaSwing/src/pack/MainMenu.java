@@ -32,7 +32,7 @@ public class MainMenu extends JPanel {
 	  protected void paintComponent(Graphics g) {
 		BufferedImage image = null;
 		try {
-			image = ImageIO.read(new File("C:/Users/Vineeth Patibandla/Desktop/mess.jpg"));
+			image = ImageIO.read(new File("C:/Users/Akram Khan/Desktop/hqdefault.jpg"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
