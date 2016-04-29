@@ -5,23 +5,21 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.Timer;
-import javax.swing.WindowConstants;
 
 public class PongGame extends JComponent implements ActionListener,KeyListener{
 	int framex=1000,framey=900;
@@ -42,21 +40,31 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 	int[] miss={0,0,0,0};
 	double predLocation=0,predLocation1=0,predLocation3=0;
 	public static JFrame window;
+	MessageListener listener;
+	int player_number;
+	String players;
+	String level;
+	String pass;
+	String message;
+	int[] ports;
+	int port;
+	String[] hostnames;
+	MessageTransmitter transmitter;
 	
-	public static void main(String args[]){
+	public void main1(String args[]){
 		window = new JFrame("Pong game");
-		PongGame game = new PongGame();
+		//PongGame game = new PongGame();
 		missLabel1 = new JLabel("1st player:0");
 		missLabel1.setBounds(100,10,600,100);
 		missLabel1.setFont(new Font("ssssssss",Font.BOLD,20));
 		missLabel1.setVisible(true);
 		window.add(missLabel1);
-		window.add(game);
+		window.add(this);
 		window.pack();
 		window.setVisible(true);
-		Timer t = new Timer(2,game);
+		Timer t = new Timer(2,this);
 		t.start();
-		window.addKeyListener(game);
+		window.addKeyListener(this);
 	}
 	
 	public void missed(int x){
@@ -102,7 +110,7 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 			velx=velx+(ballx-paddle1x-40)*deviation;
 			missed(0);
 		}*/
-		paddlecollide(22);
+		paddlecollide(Integer.parseInt(level+players));
 		wallcollide();
 		if(velx>2||vely>2){
 			velx=1;
@@ -111,17 +119,6 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 		if(miss[0]>3){
 			window.dispose();
 		}
-		if(predLocation!=0){
-			Random r = new Random();
-			int random=r.nextInt(20)-10;
-			if(predLocation-40+random>paddle3x){
-				paddle3vx=padvel;
-			}
-			else{
-				paddle3vx=-padvel;
-			}
-		}
-		follow(1);
 		ballx = ballx + velx;
 		bally = bally + vely;
 		paddle1x = paddle1x + paddle1vx;
@@ -238,49 +235,142 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keycode=e.getKeyCode();
-		switch(keycode){
-		case KeyEvent.VK_LEFT:
-			paddle1vx=-padvel;
-			break;
-		case KeyEvent.VK_RIGHT:
-			paddle1vx = padvel;
-			break;
-		case KeyEvent.VK_S:
-			paddle2vy=padvel;
-			break;
-		case KeyEvent.VK_W:
-			paddle2vy =-padvel;
-			break;
-		case KeyEvent.VK_P:
-			paddle4vy=-padvel;
-			break;
-		case KeyEvent.VK_L:
-			paddle4vy =padvel;
-			break;
-		}
+		switch(player_number) {
+			case 1 :
+				switch(keycode){
+					case KeyEvent.VK_UP:
+						paddle4vy=-padvel;
+						message = "18";
+						transmitter = new MessageTransmitter(message,hostnames,ports);
+					    transmitter.start();// TODO add your handling code here:
+						break;
+					case KeyEvent.VK_DOWN:
+						paddle4vy = padvel;
+						message = "12";
+						transmitter = new MessageTransmitter(message,hostnames,ports);
+					    transmitter.start();// TODO add your handling code here:
+						break;
+				}
+				break;
+			case 2 :
+				switch(keycode){
+				case KeyEvent.VK_UP:
+					paddle2vy=-padvel;
+					message = "28";
+					transmitter = new MessageTransmitter(message,hostnames,ports);
+				    transmitter.start();// TODO add your handling code here:
+					break;
+				case KeyEvent.VK_DOWN:
+					paddle2vy = padvel;
+					message = "22";
+					transmitter = new MessageTransmitter(message,hostnames,ports);
+				    transmitter.start();// TODO add your handling code here:
+					break;
+				}
+				break;
+			case 3 :
+				switch(keycode){
+				case KeyEvent.VK_LEFT:
+					paddle3vx=-padvel;
+					message = "34";
+					transmitter = new MessageTransmitter(message,hostnames,ports);
+				    transmitter.start();// TODO add your handling code here:
+					break;
+				case KeyEvent.VK_RIGHT:
+					paddle3vx = padvel;
+					message = "36";
+					transmitter = new MessageTransmitter(message,hostnames,ports);
+				    transmitter.start();// TODO add your handling code here:
+					break;
+				}
+				break;
+			case 4 :
+				switch(keycode){
+				case KeyEvent.VK_LEFT:
+					paddle1vx=-padvel;
+					message = "44";
+					transmitter = new MessageTransmitter(message,hostnames,ports);
+				    transmitter.start();// TODO add your handling code here:
+					break;
+				case KeyEvent.VK_RIGHT:
+					paddle1vx = padvel;
+					message = "46";
+					transmitter = new MessageTransmitter(message,hostnames,ports);
+				    transmitter.start();// TODO add your handling code here:
+					break;
+				}
+				break;
+			}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		int keycode=e.getKeyCode();
-		switch(keycode){
-		case KeyEvent.VK_LEFT:
-			paddle1vx=0;
+		switch(player_number) { 
+		case 1 :
+			switch(keycode){
+				case KeyEvent.VK_UP:
+					message = "10";
+					transmitter = new MessageTransmitter(message,hostnames,ports);
+				    transmitter.start();// TODO add your handling code here:
+				    paddle4vy= 0;
+					break;
+				case KeyEvent.VK_DOWN:
+					message = "10";
+					transmitter = new MessageTransmitter(message,hostnames,ports);
+				    transmitter.start();// TODO add your handling code here:
+				    paddle4vy= 0;
+					break;
+			}
 			break;
-		case KeyEvent.VK_RIGHT:
-			paddle1vx = 0;
+		case 2 :
+			switch(keycode){
+			case KeyEvent.VK_UP:
+				message = "20";
+				transmitter = new MessageTransmitter(message,hostnames,ports);
+			    transmitter.start();// TODO add your handling code here:
+			    paddle2vy= 0;
+				break;
+			case KeyEvent.VK_DOWN:
+				message = "20";
+				transmitter = new MessageTransmitter(message,hostnames,ports);
+			    transmitter.start();// TODO add your handling code here:
+			    paddle2vy= 0;
+				break;
+			}
 			break;
-		case KeyEvent.VK_S:
-			paddle2vy=0;
+		case 3 :
+			switch(keycode){
+			case KeyEvent.VK_LEFT:
+				
+				message = "30";
+				transmitter = new MessageTransmitter(message,hostnames,ports);
+			    transmitter.start();// TODO add your handling code here:
+			    paddle3vx= 0;
+				break;
+			case KeyEvent.VK_RIGHT:
+				message = "30";
+				transmitter = new MessageTransmitter(message,hostnames,ports);
+			    transmitter.start();// TODO add your handling code here:
+			    paddle3vx= 0;
+				break;
+			}
 			break;
-		case KeyEvent.VK_W:
-			paddle2vy = 0;
-			break;
-		case KeyEvent.VK_P:
-			paddle4vy=0;
-			break;
-		case KeyEvent.VK_L:
-			paddle4vy =0;
+		case 4 :
+			switch(keycode){
+			case KeyEvent.VK_LEFT:
+				message = "40";
+				transmitter = new MessageTransmitter(message,hostnames,ports);
+			    transmitter.start();// TODO add your handling code here:
+			    paddle1vx= 0;
+				break;
+			case KeyEvent.VK_RIGHT:
+				message = "40";
+				transmitter = new MessageTransmitter(message,hostnames,ports);
+			    transmitter.start();// TODO add your handling code here:
+			    paddle1vx= 0;
+				break;
+			}
 			break;
 		}
 	}
@@ -305,12 +395,11 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 		}
 		if(bally >yd-40){
 			vely=-vely;
-			missed(4);
+			missed(2);
 		}
 	}
 	
 	public void paddlecollide(int difplay){
-		predLocation1=0;predLocation3=0;
 		if(ballx>=paddle1x-40&&ballx<=paddle1x+100&&bally<=paddle1y+13.5&&bally>=paddle1y-43.5){
 			vely=-vely;
 			velx=velx+(ballx-paddle1x-40)*deviation;
@@ -444,7 +533,7 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 		if(predLocation1!=0){
 			Random r = new Random();
 			int random=r.nextInt(20)-10;
-			if(predLocation-40+random>paddle1x){
+			if(predLocation1-40+random>paddle1x){
 				paddle1vx=padvel;
 			}
 			else{
@@ -454,7 +543,7 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 		if(predLocation3!=0){
 			Random r = new Random();
 			int random=r.nextInt(20)-10;
-			if(predLocation-40+random>paddle3x){
+			if(predLocation3-40+random>paddle3x){
 				paddle3vx=padvel;
 			}
 			else{
@@ -471,9 +560,70 @@ public class PongGame extends JComponent implements ActionListener,KeyListener{
 		case 21:
 			follow(2);follow(3);break;
 		case 22:
-			follow(2);break;
+			follow(3);break;
 		case 31:
 			follow(2);break;
 		}
+	}
+	
+	public void prematch(int port,int player_number,String players,String level,String[] hostnames,int[] ports){
+	 	this.player_number = player_number;
+	 	this.players = players ;
+	 	this.hostnames = hostnames;
+	 	this.ports = ports;
+	 	this.port=port;
+	 	this.level = level;
+	 	if(!players.equals("1")){
+		 try {
+	            listener = new MessageListener(this,port);
+	            listener.start();
+	        } catch (IOException ex) {
+	            Logger.getLogger(PongGame.class.getName()).log(Level.SEVERE, null, ex);
+	        }
+	 	}
+		 main1(null);
+	}
+	
+	public void modify(String s){
+		int i=Integer.parseInt(s);
+		switch(i){
+		case 18:
+			paddle4vy=-padvel;
+			break;
+		case 12:
+			paddle4vy=padvel;
+			break;
+		case 28:
+			paddle2vy=-padvel;
+			break;
+		case 22:
+			paddle2vy=padvel;
+			break;
+		case 34:
+			paddle3vx=-padvel;
+			break;
+		case 36:
+			paddle3vx=padvel;
+			break;
+		case 44:
+			paddle1vx=-padvel;
+			break;
+		case 46:
+			paddle1vx=padvel;
+			break;
+		case 10:
+			paddle4vy=0;
+			break;
+		case 20:
+			paddle2vy=0;
+			break;
+		case 30:
+			paddle3vx=0;
+			break;
+		case 40:
+			paddle1vx=0;
+			break;
+		}
+		actionPerformed(null);
 	}
 }

@@ -43,6 +43,12 @@ public class NewGame extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	String players="4" ;
+	String level="1";
+	int player_number=1;
+	String[] hostnames;
+	int[] ports;
+	
 	@Override
 	  protected void paintComponent(Graphics g) {
 		BufferedImage image = null;
@@ -92,8 +98,102 @@ public class NewGame extends JPanel {
 		JButton btnNewButton = new JButton("START");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				PongGame pong = new PongGame();
-				pong.main(null);
+				String your_ip = textField_13.getText();
+				String player_1_ip = textField_8.getText();
+				String player_2_ip = textField_9.getText();
+				String player_3_ip = textField_10.getText();
+				String player_4_ip = textField_11.getText();
+				if(players.equals("1")){
+					PongGame pong = new PongGame();
+					pong.prematch(Integer.parseInt(textField_12.getText()),player_number,players,level,hostnames,ports);
+				}
+				else{
+					if (your_ip.equals(player_1_ip)) { 
+						player_number = 1 ;
+						if(hostnames.length==3){
+							hostnames[0] = player_2_ip;
+							ports[0] = Integer.parseInt(textField_5.getText());
+							hostnames[1] = player_3_ip;
+							ports[1] = Integer.parseInt(textField_6.getText());
+							hostnames[2] = player_4_ip;
+							ports[2] = Integer.parseInt(textField_7.getText());
+						}
+						if(hostnames.length==2){
+							hostnames[0] = player_2_ip;
+							ports[0] = Integer.parseInt(textField_5.getText());
+							hostnames[1] = player_3_ip;
+							ports[1] = Integer.parseInt(textField_6.getText());
+						}
+						if(hostnames.length==1){
+							hostnames[0] = player_2_ip;
+							ports[0] = Integer.parseInt(textField_5.getText());
+						}
+					}else if (your_ip.equals(player_2_ip)){
+						player_number = 2; 
+						if(hostnames.length==3){
+							hostnames[0] = player_1_ip;
+							ports[0] = Integer.parseInt(textField_4.getText());
+							hostnames[1] = player_3_ip;
+							ports[1] = Integer.parseInt(textField_6.getText());
+							hostnames[2] = player_4_ip;
+							ports[2] = Integer.parseInt(textField_7.getText());
+						}
+						if(hostnames.length==2){
+							hostnames[0] = player_1_ip;
+							ports[0] = Integer.parseInt(textField_4.getText());
+							hostnames[1] = player_3_ip;
+							ports[1] = Integer.parseInt(textField_6.getText());
+						}
+						if(hostnames.length==1){
+							hostnames[0] = player_1_ip;
+							ports[0] = Integer.parseInt(textField_4.getText());
+						}
+					}else if (your_ip.equals(player_3_ip)){ 
+						player_number = 3;
+						if(hostnames.length==3){
+							hostnames[0] = player_1_ip;
+							ports[0] = Integer.parseInt(textField_4.getText());
+							hostnames[1] = player_2_ip;
+							ports[1] = Integer.parseInt(textField_5.getText());
+							hostnames[2] = player_4_ip;
+							ports[2] = Integer.parseInt(textField_7.getText());
+						}
+						if(hostnames.length==2){
+							hostnames[0] = player_1_ip;
+							ports[0] = Integer.parseInt(textField_4.getText());
+							hostnames[1] = player_2_ip;
+							ports[1] = Integer.parseInt(textField_5.getText());
+						}
+						if(hostnames.length==1){
+							hostnames[0] = player_1_ip;
+							ports[0] = Integer.parseInt(textField_4.getText());
+						}
+					}else{ 
+						if(hostnames.length==3){
+							player_number = 4;
+							hostnames[0] = player_1_ip;
+							ports[0] = Integer.parseInt(textField_4.getText());
+							hostnames[1] = player_2_ip;
+							ports[1] = Integer.parseInt(textField_5.getText());
+							hostnames[2] = player_3_ip;
+							ports[2] = Integer.parseInt(textField_6.getText());
+						} 
+						if(hostnames.length==2){
+							player_number = 4;
+							hostnames[0] = player_1_ip;
+							ports[0] = Integer.parseInt(textField_4.getText());
+							hostnames[1] = player_2_ip;
+							ports[1] = Integer.parseInt(textField_5.getText());
+						} 
+						if(hostnames.length==1){
+							player_number = 4;
+							hostnames[0] = player_1_ip;
+							ports[0] = Integer.parseInt(textField_4.getText());
+						}
+					}
+					PongGame pong = new PongGame();
+					pong.prematch(Integer.parseInt(textField_12.getText()),player_number,players,level,hostnames,ports);
+				}
 			}
 		});
 		btnNewButton.setForeground(Color.RED);
@@ -280,10 +380,24 @@ public class NewGame extends JPanel {
 		lblYourPort_1.setBounds(932, 203, 156, 40);
 		add(lblYourPort_1);
 		
+		comboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				level=e.getItem().toString();
+				if (level.equals("Easy")) { 
+					level = "1";
+				}else if (level.equals("Medium")) { 
+					level = "2";
+				}else { 
+					level = "3";
+				}
+			}
+		});
+		
 		comboBox_1.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				String players = e.getItem().toString();
+				players = e.getItem().toString();
 				switch(players){
 				case "1":
 					lblPlayer_1.setVisible(false);
@@ -318,7 +432,16 @@ public class NewGame extends JPanel {
 					textField_3.setVisible(true);
 					break;
 				}
+				int players_int = Integer.parseInt(players);
+				if(players_int !=1){
+					hostnames = new String[(players_int)-1];
+					ports = new int[(players_int)-1];
+				}
+				else{
+					hostnames=new String[2];
+					ports=new int[2];
+				}
 			}
-		});	
+		});
 	}
 }
